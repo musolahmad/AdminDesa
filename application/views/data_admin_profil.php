@@ -1,12 +1,10 @@
 <?php 
-  foreach ($data as $d) {
-    $nm_admin=$d['nm_pegawai'];
-    $jabatan=$d['nm_jabatan'];
-    $kd_admin=$d['kd_admin'];
-    $lvl_admin=$d['lvl_admin'];
-    $email=$d['email'];
-    $foto_profil=$d['foto_profil'];
-  }
+  $nm_admin=$data->nm_pegawai;
+    $jabatan=$data->nm_jabatan;
+    $kd_admin=$data->kd_admin;
+    $lvl_admin=$data->lvl_admin;
+    $email=$data->email;
+    $foto_profil=$data->foto_profil;
 ?>
 <!DOCTYPE html>
 <html>

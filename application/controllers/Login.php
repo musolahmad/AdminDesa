@@ -99,20 +99,16 @@ class Login extends CI_Controller {
 		if (empty($lihat)) {
 			$cekemail=$this->Admin_model->cekemaillogin($kd_admin);
 			if (empty($cekemail)) {
-				# code...
 				$this->session->set_flashdata('error', 'Email Salah! silahkan masukkan kode admin atau email yang benar!');
             	echo '<script>window.history.back();</script>';
 			}else{
-				foreach ($cekemail as $l) {
-					$kode_admin=$l['kd_admin'];
-					$password=$l['pass'];
-					$nama=$l['nm_pegawai'];
-					$lvl_admin=$l['lvl_admin'];
-					$foto=$l['foto_profil'];
-					$status_admin=$l['status_admin'];
-				}
-
-				if ($pass != $password) {
+				$kode_admin=$cekemail->kd_admin;
+				$password=$cekemail->pass;
+				$nama=$cekemail->nm_pegawai;
+				$lvl_admin=$cekemail->lvl_admin;
+				$foto=$cekemail->foto_profil;
+				$status_admin=$cekemail->status_admin;
+				if (password_verify($password, $pass)) {
 					$this->session->set_flashdata('error', 'Password Salah! silahkan masukkan Password yang benar!');
 	            	echo '<script>window.history.back();</script>';
 				}elseif ($status_admin != '1') {
@@ -128,32 +124,28 @@ class Login extends CI_Controller {
 					redirect(base_url());	
 		        }
 			}
-			
 		}else{
-			foreach ($lihat as $l) {
-				$kode_admin=$l['kd_admin'];
-				$password=$l['pass'];
-				$nama=$l['nm_pegawai'];
-				$lvl_admin=$l['lvl_admin'];
-				$foto=$l['foto_profil'];
-				$status_admin=$l['status_admin'];
-			}
-
-			if ($pass != $password) {
+			$kode_admin=$lihat->kd_admin;
+			$password=$lihat->pass;
+			$nama=$lihat->nm_pegawai;
+			$lvl_admin=$lihat->lvl_admin;
+			$foto=$lihat->foto_profil;
+			$status_admin=$lihat->status_admin;
+			if (password_verify($password, $pass)) {
 				$this->session->set_flashdata('error', 'Password Salah! silahkan masukkan Password yang benar!');
-	           	echo '<script>window.history.back();</script>';
+	            echo '<script>window.history.back();</script>';
 			}elseif ($status_admin != '1') {
 				$this->session->set_flashdata('error', 'Akun Dinonaktifkan! silahkan hubungi super admin!');
-	           	echo '<script>window.history.back();</script>';
-			}else if ($this->input->post('captcha') != $this->session->userdata('captchaword')) {
-	            $this->session->set_flashdata('error', 'Kode Captcha Salah! silahkan masukkan kode captcha yang benar!');
 	            echo '<script>window.history.back();</script>';
-	        }else{
-	        	$data_session = array('statuslogin'=>'masuk','Password'=>$password,'nama'=>$nama,'kode_admin'=>$kode_admin,'foto'=>$foto,'lvl_admin'=>$lvl_admin);
-				$this->session->set_userdata($data_session);
+			}else if ($this->input->post('captcha') != $this->session->userdata('captchaword')) {
+		        $this->session->set_flashdata('error', 'Kode Captcha Salah! silahkan masukkan kode captcha yang benar!');
+		         echo '<script>window.history.back();</script>';
+		    }else{
+		       $data_session = array('statuslogin'=>'masuk','Password'=>$password,'nama'=>$nama,'kode_admin'=>$kode_admin,'foto'=>$foto,'lvl_admin'=>$lvl_admin);
+				$this->session->set_userdata($data_session);			
 				$this->session->set_flashdata('berhasil', $nama);
 				redirect(base_url());	
-	        }
+		    }
 		}	
 		
 	}

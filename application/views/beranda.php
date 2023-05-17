@@ -22,7 +22,8 @@ foreach ($jml_ditolak as $j) {
 }
 $warna=array("aqua","green","yellow","red","purple","aqua","green","yellow","red","purple");
 $warna2=array("purple","red","aqua","green","yellow","purple","red","aqua","green","yellow");
-
+$web_admin = '';
+$web_masyarakat = '';
 foreach ($web as $w) {
   # code...
   $web_admin=$w['web_admin'];

@@ -94,7 +94,7 @@ class Admin extends CI_Controller {
 							'nm_pegawai'=>$this->input->post('nm_pegawai'),
 							'nm_jabatan'=>$this->input->post('nm_jabatan'),
 							'email'=>$this->input->post('email'),
-							'pass'=>$this->input->post('pass'),
+							'pass'=>password_hash($this->input->post('pass'), PASSWORD_DEFAULT),
 							'lvl_admin'=>$this->input->post('lvl_admin'),
 							'foto_profil'=>$foto_profil
 						);
@@ -121,20 +121,24 @@ class Admin extends CI_Controller {
 	public function ubah()
 	{
 		if ($this->input->post('email')==$this->input->post('emaillama')) {
-			# code...
+			if ($this->input->post('pass')=='') {
+				$pass=$this->input->post('pass_lama');
+			}else{
+				$pass=password_hash($this->input->post('pass'), PASSWORD_DEFAULT);
+			}
 			$nmfile=$_FILES['foto_profil']['name'];
 			if ($nmfile=="") {
 				$data=array(
 					'nm_pegawai'=>$this->input->post('nm_pegawai'),
 					'nm_jabatan'=>$this->input->post('nm_jabatan'),
 					'email'=>$this->input->post('email'),
-					'pass'=>$this->input->post('pass'),
+					'pass'=>$pass,
 					'lvl_admin'=>$this->input->post('lvl_admin')
 				);
 				$this->Admin_model->ubah($this->input->post('kd_admin'),$data);
 				if ($this->db->affected_rows() > 0) {
 					if($this->session->userdata('kode_admin')==$this->input->post('kd_admin')){
-								$password=$this->input->post('pass');
+								$password=$pass;
 								$nama=$this->input->post('nm_pegawai');
 								$lvl_admin=$this->input->post('lvl_admin');
 								$foto=$foto_profil;
@@ -329,17 +333,18 @@ class Admin extends CI_Controller {
 	}
 	public function ubahpass()
 	{
-		if ($this->session->userdata('Password')!=$this->input->post('password_lama')) {
+		if (password_verify($this->session->userdata('Password'), $this->input->post('password_lama'))) {
 			$this->session->set_flashdata('error', 'Password Lama Salah! silahkan masukkan password lama yang benar!');
 		}elseif ($this->input->post('password_baru')!=$this->input->post('password_confirm')) {
 			$this->session->set_flashdata('error', 'Konfirmasi Password Baru Salah! silahkan masukkan konfirmasi password baru yang benar!');
 		}else{
+			$pass=password_hash($this->input->post('password_baru'), PASSWORD_DEFAULT);
 			$data=array(
-			'pass'=>$this->input->post('password_baru')
+			'pass'=>$pass
 			);
 			$this->Admin_model->ubah($this->session->userdata('kode_admin'),$data);
 			if ($this->db->affected_rows() > 0) {
-				$data_session = array('Password'=>$this->input->post('password_baru'),'menu' => 'Admin','ubah'=>'pass');
+				$data_session = array('Password'=>$pass,'menu' => 'Admin','ubah'=>'pass');
 				$this->session->set_userdata($data_session);
 				$this->session->set_flashdata('flash','Diubah');
 				redirect('Admin/Profil');

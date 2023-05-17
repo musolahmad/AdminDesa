@@ -16,7 +16,7 @@ class Admin_model extends CI_Model
 	{	
 		$this->db->order_by('kd_admin', 'DESC');
 		$this->db->limit(1);		
-		return $this->db->get('tb_admin')->result_array();
+		return $this->db->get('tb_admin')->first_row();
 	}
 	
 	function simpan($data)
@@ -31,15 +31,15 @@ class Admin_model extends CI_Model
 	}
 	function cari($kd_admin)
 	{	
-		return $this->db->where(['kd_admin'=>$kd_admin])->get('tb_admin')->result_array();
+		return $this->db->where(['kd_admin'=>$kd_admin])->get('tb_admin')->first_row();
 	}
 	function cekemaillogin($kd_admin)
 	{	
-		return $this->db->where(['email'=>$kd_admin])->get('tb_admin')->result_array();
+		return $this->db->where(['email'=>$kd_admin])->get('tb_admin')->first_row();
 	}
 	function login($kd_admin,$pass)
 	{	
-		return $this->db->where(['kd_admin'=>$kd_admin,'pass'=>$pass])->get('tb_admin')->result_array();
+		return $this->db->where(['kd_admin'=>$kd_admin,'pass'=>$pass])->get('tb_admin')->first_row();
 	}
 	function ubah($kd_admin,$data)
 	{	
@@ -47,10 +47,10 @@ class Admin_model extends CI_Model
 	}
 	function cekemailuser($email)
 	{	
-		return $this->db->where(['email'=>$email])->get('tb_user')->result_array();
+		return $this->db->where(['email'=>$email])->get('tb_user')->first_row();
 	}
 	function cekemailadmin($email)
 	{	
-		return $this->db->where(['email'=>$email])->get('tb_admin')->result_array();
+		return $this->db->where(['email'=>$email])->get('tb_admin')->first_row();
 	}
 }

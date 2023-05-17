@@ -6,9 +6,7 @@
     # code...
     $kd_admin="ADM001";
   }else{
-    foreach ($nomor as $n) {
-    $nilai = substr($n['kd_admin'], 3)+1;
-    }
+    $nilai = substr($nomor->kd_admin, 3)+1;
     if ($nilai<10) {
       # code...
       $kd_admin="ADM00".$nilai;

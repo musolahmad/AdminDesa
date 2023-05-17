@@ -1,14 +1,11 @@
 <?php
-foreach ($data as $d) {
-  # code...
-  $kd_admin=$d['kd_admin'];
-  $nm_pegawai=$d['nm_pegawai'];
-  $nm_jabatan=$d['nm_jabatan'];
-  $email=$d['email'];
-  $pass=$d['pass'];
-  $lvl_admin=$d['lvl_admin'];
-  $foto_profil=$d['foto_profil'];
-}
+$kd_admin=$data->kd_admin;
+  $nm_pegawai=$data->nm_pegawai;
+  $nm_jabatan=$data->nm_jabatan;
+  $email=$data->email;
+  $pass=$data->pass;
+  $lvl_admin=$data->lvl_admin;
+  $foto_profil=$data->foto_profil;
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,7 +77,8 @@ foreach ($data as $d) {
                 </div>
                 <div class="form-group">
                   <label>Password</label>
-                  <input type="password" class="form-control" id="pass" name="pass" placeholder="Password" value="<?= $pass?>" required >
+                  <input type="password" class="form-control" id="pass" name="pass" placeholder="Password">
+                  <input type="hidden" class="form-control" id="pass_lama" name="pass_lama" placeholder="Password" value="<?= $pass?>">
                   <!-- /.input group -->
                 </div>
                 <div class="form-group">
